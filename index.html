@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Unicto Search - Search everything across web, YouTube, Wikipedia, news, and social platforms."/>
   <title>Unicto Search - Search Everything</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/></noscript>
   <style>
     :root {
       --bg-light: #eef2f3;
@@ -15,198 +17,163 @@
       --secondary: #28a745;
     }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: var(--bg-light);
-      color: var(--text-light);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: background 0.3s, color 0.3s;
-      min-height: 100vh;
+      font-family: 'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+      margin:0;
+      padding:0;
+      background:var(--bg-light);
+      color:var(--text-light);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      transition:background 0.3s,color 0.3s;
+      min-height:100vh;
     }
-    body.dark {
-      background: var(--bg-dark);
-      color: var(--text-dark);
-    }
+    body.dark {background:var(--bg-dark);color:var(--text-dark);}
     .logo {
-      font-size: 3.5rem;
-      font-weight: 900;
-      margin-top: 40px;
-      user-select: none;
-      font-family: 'Product Sans', Arial, sans-serif;
-      letter-spacing: 0.08em;
-      display: flex;
-      gap: 0.02em;
-      flex-wrap: wrap;
-      justify-content: center;
+      font-size:3.5rem;
+      font-weight:900;
+      margin-top:40px;
+      user-select:none;
+      font-family:'Product Sans',Arial,sans-serif;
+      letter-spacing:0.08em;
+      display:flex;
+      gap:0.02em;
+      flex-wrap:wrap;
+      justify-content:center;
     }
-    .logo span:nth-child(1) { color: #4285F4; }
-    .logo span:nth-child(2) { color: #DB4437; }
-    .logo span:nth-child(3) { color: #F4B400; }
-    .logo span:nth-child(4) { color: #4285F4; }
-    .logo span:nth-child(5) { color: #0F9D58; }
-    .logo span:nth-child(6) { color: #DB4437; }
-    .logo span:nth-child(7) { color: transparent; }
-    .logo span:nth-child(8) { color: #4285F4; }
-    .logo span:nth-child(9) { color: #DB4437; }
-    .logo span:nth-child(10) { color: #F4B400; }
-    .logo span:nth-child(11) { color: #4285F4; }
-    .logo span:nth-child(12) { color: #0F9D58; }
-    .logo span:nth-child(13) { color: #DB4437; }
-
+    .logo span:nth-child(1){color:#4285F4;}
+    .logo span:nth-child(2){color:#DB4437;}
+    .logo span:nth-child(3){color:#F4B400;}
+    .logo span:nth-child(4){color:#4285F4;}
+    .logo span:nth-child(5){color:#0F9D58;}
+    .logo span:nth-child(6){color:#DB4437;}
+    .logo span:nth-child(7){color:transparent;}
+    .logo span:nth-child(8){color:#4285F4;}
+    .logo span:nth-child(9){color:#DB4437;}
+    .logo span:nth-child(10){color:#F4B400;}
+    .logo span:nth-child(11){color:#4285F4;}
+    .logo span:nth-child(12){color:#0F9D58;}
+    .logo span:nth-child(13){color:#DB4437;}
     #searchBox {
-      margin-top: 20px;
-      width: 90%;
-      max-width: 520px;
-      padding: 14px 18px;
-      font-size: 18px;
-      border-radius: 12px;
-      border: 2px solid var(--primary);
-      outline: none;
-      transition: box-shadow 0.3s;
+      margin-top:20px;
+      width:90%;
+      max-width:520px;
+      padding:14px 18px;
+      font-size:18px;
+      border-radius:12px;
+      border:2px solid var(--primary);
+      outline:none;
+      transition:box-shadow 0.3s;
     }
-    #searchBox:focus {
-      box-shadow: 0 0 10px var(--primary);
-      border-color: var(--primary);
+    #searchBox:focus{box-shadow:0 0 10px var(--primary);border-color:var(--primary);}
+    .error-message {
+      color:red;
+      margin-top:8px;
+      font-size:14px;
+      display:none;
+      max-width:520px;
     }
     .tabs {
-      margin: 25px 0 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      max-width: 700px;
-      padding: 0 10px;
+      margin:25px 0 20px;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:12px;
+      max-width:900px;
+      padding:0 10px;
     }
     .tab {
-      padding: 12px 22px;
-      background: #ddd;
-      border-radius: 24px;
-      font-weight: 600;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.3s, color 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
+      padding:12px 22px;
+      background:#ddd;
+      border-radius:24px;
+      font-weight:600;
+      cursor:pointer;
+      user-select:none;
+      transition:background 0.3s,color 0.3s;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:14px;
+      outline:none;
     }
-    .tab i {
-      font-size: 16px;
-    }
-    .tab.active {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 8px rgba(0,123,255,0.4);
-    }
+    .tab i{font-size:16px;}
+    .tab.active{background:var(--primary);color:white;box-shadow:0 4px 8px rgba(0,123,255,0.4);}
+    .tab:focus{box-shadow:0 0 0 3px var(--primary);}
     button {
-      background: var(--secondary);
-      border: none;
-      color: white;
-      font-size: 18px;
-      padding: 14px 28px;
-      border-radius: 24px;
-      cursor: pointer;
-      margin-bottom: 40px;
-      font-weight: 600;
-      box-shadow: 0 4px 8px rgba(40,167,69,0.4);
-      transition: background 0.3s, box-shadow 0.3s;
+      background:var(--secondary);
+      border:none;
+      color:white;
+      font-size:18px;
+      padding:14px 28px;
+      border-radius:24px;
+      cursor:pointer;
+      margin-bottom:40px;
+      font-weight:600;
+      box-shadow:0 4px 8px rgba(40,167,69,0.4);
+      transition:background 0.3s,box-shadow 0.3s;
     }
-    button:hover {
-      background: #218838;
-      box-shadow: 0 6px 12px rgba(33,136,56,0.6);
-    }
+    button:hover{background:#218838;box-shadow:0 6px 12px rgba(33,136,56,0.6);}
     #results {
-      max-width: 600px;
-      width: 90%;
-      background: white;
-      border-radius: 12px;
-      padding: 20px 28px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-      display: none;
-      color: var(--text-light);
-      margin-bottom: 40px;
-      transition: background 0.3s, color 0.3s;
+      max-width:600px;
+      width:90%;
+      background:white;
+      border-radius:12px;
+      padding:20px 28px;
+      box-shadow:0 4px 14px rgba(0,0,0,0.1);
+      display:none;
+      color:var(--text-light);
+      margin-bottom:40px;
+      transition:background 0.3s,color 0.3s;
     }
-    body.dark #results {
-      background: #2e2e3e;
-      color: var(--text-dark);
-    }
+    body.dark #results{background:#2e2e3e;color:var(--text-dark);}
     .loader {
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid var(--primary);
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      animation: spin 1s linear infinite;
-      margin: 30px auto 40px;
-      display: none;
+      border:6px solid #f3f3f3;
+      border-top:6px solid var(--primary);
+      border-radius:50%;
+      width:44px;
+      height:44px;
+      animation:spin 1s linear infinite;
+      margin:30px auto 40px;
+      display:none;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
-    }
+    @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
     .dark-mode-toggle {
-      position: fixed;
-      top: 14px;
-      right: 20px;
-      font-size: 22px;
-      cursor: pointer;
-      color: var(--text-light);
-      user-select: none;
-      transition: color 0.3s;
-      z-index: 10;
+      position:fixed;
+      top:14px;
+      right:20px;
+      font-size:22px;
+      cursor:pointer;
+      color:var(--text-light);
+      user-select:none;
+      transition:color 0.3s;
+      z-index:10;
     }
-    body.dark .dark-mode-toggle {
-      color: var(--text-dark);
-    }
+    body.dark .dark-mode-toggle{color:var(--text-dark);}
     footer {
-      width: 100%;
-      text-align: center;
-      padding: 20px 0;
-      background: #f8f9fa;
-      color: #555;
-      font-size: 14px;
-      border-top: 1px solid #ddd;
-      transition: background 0.3s, color 0.3s;
+      width:100%;
+      text-align:center;
+      padding:20px 0;
+      background:#f8f9fa;
+      color:#555;
+      font-size:14px;
+      border-top:1px solid #ddd;
+      transition:background 0.3s,color 0.3s;
     }
-    body.dark footer {
-      background: #2e2e3e;
-      color: #aaa;
-      border-top: 1px solid #555;
-    }
-    footer a {
-      color: #007bff;
-      text-decoration: none;
-    }
-    body.dark footer a {
-      color: #4dabf7;
-    }
-    @media (max-width: 480px) {
-      .logo {
-        font-size: 2.5rem;
-        margin-top: 30px;
-      }
-      .tab {
-        font-size: 12px;
-        padding: 8px 16px;
-      }
-      button {
-        font-size: 16px;
-        padding: 12px 22px;
-      }
-      #searchBox {
-        font-size: 16px;
-        padding: 12px 14px;
-      }
+    body.dark footer{background:#2e2e3e;color:#aaa;border-top:1px solid #555;}
+    footer a{color:#007bff;text-decoration:none;}
+    body.dark footer a{color:#4dabf7;}
+    @media (max-width:480px){
+      .logo{font-size:2.5rem;margin-top:30px;}
+      .tab{font-size:12px;padding:8px 16px;}
+      button{font-size:16px;padding:12px 22px;}
+      #searchBox{font-size:16px;padding:12px 14px;}
     }
   </style>
 </head>
 <body>
-  <div class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
-    <i class="fas fa-moon" id="darkIcon"></i>
+  <div class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode" role="button" aria-pressed="false" tabindex="0">
+    <i class="fas fa-moon" id="darkIcon" aria-hidden="true"></i>
+    <span class="sr-only">Toggle dark mode</span>
   </div>
 
   <div class="logo" aria-label="Unicto Search logo">
@@ -214,141 +181,180 @@
     <span>S</span><span>e</span><span>a</span><span>r</span><span>c</span><span>h</span>
   </div>
 
-  <input type="text" id="searchBox" placeholder="Search anything..." autocomplete="off" />
+  <input type="text" id="searchBox" placeholder="Search here..." aria-label="Search input" autocomplete="off"/>
+  <div class="error-message" id="errorMsg" role="alert" aria-live="assertive"></div>
 
-  <div class="tabs">
-    <div class="tab active" data-type="web"><i class="fas fa-globe"></i>Web</div>
-    <div class="tab" data-type="youtube"><i class="fab fa-youtube"></i>YouTube</div>
-    <div class="tab" data-type="wikipedia"><i class="fab fa-wikipedia-w"></i>Wikipedia</div>
-    <div class="tab" data-type="news"><i class="fas fa-newspaper"></i>News</div>
-    <div class="tab" data-type="images"><i class="fas fa-image"></i>Images</div>
-    <div class="tab" data-type="twitter"><i class="fab fa-twitter"></i>Twitter</div>
-    <div class="tab" data-type="reddit"><i class="fab fa-reddit-alien"></i>Reddit</div>
-    <div class="tab" data-type="shopping"><i class="fas fa-shopping-cart"></i>Shopping</div>
-    <div class="tab" data-type="instagram"><i class="fab fa-instagram"></i>Instagram</div>
-    <div class="tab" data-type="tiktok"><i class="fab fa-tiktok"></i>TikTok</div>
-    <div class="tab" data-type="linkedin"><i class="fab fa-linkedin-in"></i>LinkedIn</div>
-    <div class="tab" data-type="facebook"><i class="fab fa-facebook-f"></i>Facebook</div>
-    <div class="tab" data-type="github"><i class="fab fa-github"></i>GitHub</div>
-    <div class="tab" data-type="stackoverflow"><i class="fab fa-stack-overflow"></i>Stack Overflow</div>
+  <div class="tabs" role="tablist" aria-label="Search categories">
+    <div class="tab active" role="tab" aria-selected="true" tabindex="0" data-tab="web" title="Search the web">
+      <i class="fas fa-globe"></i> Web
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="youtube" title="Search YouTube videos">
+      <i class="fab fa-youtube"></i> YouTube
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="wiki" title="Search Wikipedia articles">
+      <i class="fab fa-wikipedia-w"></i> Wikipedia
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="googleShopping" title="Search Google Shopping">
+      <i class="fas fa-shopping-cart"></i> Shopping
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="instagram" title="Search Instagram profiles">
+      <i class="fab fa-instagram"></i> Instagram
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="facebook" title="Search Facebook profiles">
+      <i class="fab fa-facebook-f"></i> Facebook
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="twitter" title="Search Twitter profiles">
+      <i class="fab fa-twitter"></i> Twitter
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="linkedin" title="Search LinkedIn profiles">
+      <i class="fab fa-linkedin-in"></i> LinkedIn
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="reddit" title="Search Reddit posts">
+      <i class="fab fa-reddit-alien"></i> Reddit
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="pinterest" title="Search Pinterest">
+      <i class="fab fa-pinterest-p"></i> Pinterest
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="tiktok" title="Search TikTok videos">
+      <i class="fab fa-tiktok"></i> TikTok
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="amazon" title="Search Amazon products">
+      <i class="fab fa-amazon"></i> Amazon
+    </div>
+    <div class="tab" role="tab" aria-selected="false" tabindex="0" data-tab="netflix" title="Search Netflix shows">
+      <i class="fas fa-film"></i> Netflix
+    </div>
   </div>
 
-  <button onclick="search()">Search</button>
+  <button onclick="search()" aria-label="Search button">Search</button>
 
-  <div class="loader" id="loader"></div>
-
-  <div id="results"></div>
+  <div class="loader" id="loader" aria-hidden="true"></div>
+  <div id="results" role="region" aria-live="polite" aria-atomic="true"></div>
 
   <footer>
-    Contact us at: 
-    <a href="mailto:unictosearch@gmail.com" target="_blank" rel="noopener">unictosearch@gmail.com</a>
+    &copy; 2025 Unicto Search - Built with care
   </footer>
 
-  <script>
-    let selectedType = "web";
+<script>
+  const tabs=document.querySelectorAll('.tab');
+  const resultsDiv=document.getElementById('results');
+  const loader=document.getElementById('loader');
+  const errorMsg=document.getElementById('errorMsg');
+  const searchBox=document.getElementById('searchBox');
+  const darkToggle=document.querySelector('.dark-mode-toggle');
+  const darkIcon=document.getElementById('darkIcon');
 
-    document.querySelectorAll(".tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
-        selectedType = tab.getAttribute("data-type");
-      });
+  if(localStorage.getItem('darkMode')==='enabled'){
+    document.body.classList.add('dark');
+    darkIcon.className='fas fa-sun';
+    darkToggle.setAttribute('aria-pressed','true');
+  }
+
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>activateTab(tab));
+    tab.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        activateTab(tab);
+      }
     });
+  });
 
-    function search() {
-      const query = document.getElementById("searchBox").value.trim();
-      if (!query) return alert("Please enter a search term.");
+  function activateTab(tab){
+    tabs.forEach(t=>{
+      t.classList.remove('active');
+      t.setAttribute('aria-selected','false');
+      t.setAttribute('tabindex','-1');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected','true');
+    tab.setAttribute('tabindex','0');
+    tab.focus();
+    resultsDiv.style.display='none';
+    errorMsg.style.display='none';
+  }
 
-      const results = document.getElementById("results");
-      const loader = document.getElementById("loader");
+  searchBox.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){
+      e.preventDefault();
+      search();
+    }
+  });
 
-      results.style.display = "none";
-      loader.style.display = "block";
+  function showLoader(){
+    loader.style.display='block';
+    loader.setAttribute('aria-hidden','false');
+  }
+  function hideLoader(){
+    loader.style.display='none';
+    loader.setAttribute('aria-hidden','true');
+  }
 
-      const encodedQuery = encodeURIComponent(query);
+  function search(){
+    const query=searchBox.value.trim();
+    errorMsg.style.display='none';
+    resultsDiv.style.display='none';
+    resultsDiv.innerHTML='';
 
-      const openLink = (url) => {
-        window.open(url, '_blank');
-        loader.style.display = "none";
-        results.innerHTML = `Opening: <a href="${url}" target="_blank" rel="noopener">${url}</a>`;
-        results.style.display = "block";
-      };
-
-      switch (selectedType) {
-        case "web":
-          openLink(`https://www.google.com/search?q=${encodedQuery}`);
-          break;
-        case "youtube":
-          openLink(`https://www.youtube.com/results?search_query=${encodedQuery}`);
-          break;
-        case "wikipedia":
-          fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodedQuery}`)
-            .then(res => {
-              if (!res.ok) throw new Error("Not found");
-              return res.json();
-            })
-            .then(data => {
-              loader.style.display = "none";
-              results.style.display = "block";
-              results.innerHTML = `<h3>${data.title}</h3><p>${data.extract}</p><p><a href="${data.content_urls.desktop.page}" target="_blank" rel="noopener">Read more on Wikipedia</a></p>`;
-            })
-            .catch(() => {
-              loader.style.display = "none";
-              results.style.display = "block";
-              results.innerHTML = `No Wikipedia article found for "${query}".`;
-            });
-          break;
-        case "news":
-          openLink(`https://news.google.com/search?q=${encodedQuery}`);
-          break;
-        case "images":
-          openLink(`https://www.google.com/search?tbm=isch&q=${encodedQuery}`);
-          break;
-        case "twitter":
-          openLink(`https://twitter.com/search?q=${encodedQuery}`);
-          break;
-        case "reddit":
-          openLink(`https://www.reddit.com/search/?q=${encodedQuery}`);
-          break;
-        case "shopping":
-          openLink(`https://www.google.com/search?tbm=shop&q=${encodedQuery}`);
-          break;
-        case "instagram":
-          openLink(`https://www.instagram.com/explore/tags/${encodedQuery}/`);
-          break;
-        case "tiktok":
-          openLink(`https://www.tiktok.com/search?q=${encodedQuery}`);
-          break;
-        case "linkedin":
-          openLink(`https://www.linkedin.com/search/results/all/?keywords=${encodedQuery}`);
-          break;
-        case "facebook":
-          openLink(`https://www.facebook.com/search/top?q=${encodedQuery}`);
-          break;
-        case "github":
-          openLink(`https://github.com/search?q=${encodedQuery}`);
-          break;
-        case "stackoverflow":
-          openLink(`https://stackoverflow.com/search?q=${encodedQuery}`);
-          break;
-        default:
-          alert("Unknown search type");
-          loader.style.display = "none";
-          break;
-      }
+    if(!query){
+      errorMsg.textContent='Please enter a search query.';
+      errorMsg.style.display='block';
+      searchBox.focus();
+      return;
     }
 
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-      const icon = document.getElementById('darkIcon');
-      if (document.body.classList.contains('dark')) {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-      } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
+    const activeTab=document.querySelector('.tab.active').dataset.tab;
+
+    if(activeTab==='wiki'){
+      showLoader();
+      const wikiQuery=encodeURIComponent(query.replace(/ /g,'_'));
+      fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${wikiQuery}`)
+        .then(response=>{
+          if(!response.ok)throw new Error('Page not found');
+          return response.json();
+        })
+        .then(data=>{
+          hideLoader();
+          if(data.extract){
+            resultsDiv.innerHTML=`<h2>${data.title}</h2><p>${data.extract}</p><a href="${data.content_urls.desktop.page}" target="_blank" rel="noopener">Read more on Wikipedia</a>`;
+            resultsDiv.style.display='block';
+          }else{
+            resultsDiv.innerHTML='<p>No Wikipedia results found.</p>';
+            resultsDiv.style.display='block';
+          }
+        })
+        .catch(()=>{
+          hideLoader();
+          resultsDiv.innerHTML='<p>No Wikipedia results found.</p>';
+          resultsDiv.style.display='block';
+        });
+    }else{
+      let searchURL='';
+      switch(activeTab){
+        case 'web':searchURL=`https://www.google.com/search?q=${encodeURIComponent(query)}`;break;
+        case 'youtube':searchURL=`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;break;
+        case 'googleShopping':searchURL=`https://www.google.com/search?tbm=shop&q=${encodeURIComponent(query)}`;break;
+        case 'instagram':searchURL=`https://www.instagram.com/${encodeURIComponent(query)}`;break;
+        case 'facebook':searchURL=`https://www.facebook.com/search/top?q=${encodeURIComponent(query)}`;break;
+        case 'twitter':searchURL=`https://twitter.com/search?q=${encodeURIComponent(query)}`;break;
+        case 'linkedin':searchURL=`https://www.linkedin.com/search/results/all/?keywords=${encodeURIComponent(query)}`;break;
+        case 'reddit':searchURL=`https://www.reddit.com/search/?q=${encodeURIComponent(query)}`;break;
+        case 'pinterest':searchURL=`https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`;break;
+        case 'tiktok':searchURL=`https://www.tiktok.com/search?q=${encodeURIComponent(query)}`;break;
+        case 'amazon':searchURL=`https://www.amazon.com/s?k=${encodeURIComponent(query)}`;break;
+        case 'netflix':searchURL=`https://www.google.com/search?q=site:netflix.com+${encodeURIComponent(query)}`;break;
+        default:searchURL=`https://www.google.com/search?q=${encodeURIComponent(query)}`;
       }
+      window.open(searchURL,'_blank','noopener');
     }
-  </script>
+  }
+
+  function toggleDarkMode(){
+    const isDark=document.body.classList.toggle('dark');
+    darkIcon.className=isDark?'fas fa-sun':'fas fa-moon';
+    darkToggle.setAttribute('aria-pressed',isDark?'true':'false');
+    localStorage.setItem('darkMode',isDark?'enabled':'disabled');
+  }
+</script>
 </body>
-  </html>
+</html>

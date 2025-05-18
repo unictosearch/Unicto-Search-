@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unicto Search - Search Everything</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg-light: #eef2f3;
+      --bg-dark: #1e1e2f;
+      --text-light: #2c3e50;
+      --text-dark: #f1f1f1;
+      --primary: #007bff;
+      --secondary: #28a745;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg-light);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+    }
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    .logo {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-top: 40px;
+      user-select: none;
+      font-family: 'Product Sans', Arial, sans-serif;
+      letter-spacing: 0.08em;
+      display: flex;
+      gap: 0.02em;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .logo span:nth-child(1) { color: #4285F4; }
+    .logo span:nth-child(2) { color: #DB4437; }
+    .logo span:nth-child(3) { color: #F4B400; }
+    .logo span:nth-child(4) { color: #4285F4; }
+    .logo span:nth-child(5) { color: #0F9D58; }
+    .logo span:nth-child(6) { color: #DB4437; }
+    .logo span:nth-child(7) { color: transparent; }
+    .logo span:nth-child(8) { color: #4285F4; }
+    .logo span:nth-child(9) { color: #DB4437; }
+    .logo span:nth-child(10) { color: #F4B400; }
+    .logo span:nth-child(11) { color: #4285F4; }
+    .logo span:nth-child(12) { color: #0F9D58; }
+    .logo span:nth-child(13) { color: #DB4437; }
+
+    #searchBox {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 520px;
+      padding: 14px 18px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: 2px solid var(--primary);
+      outline: none;
+      transition: box-shadow 0.3s;
+    }
+    #searchBox:focus {
+      box-shadow: 0 0 10px var(--primary);
+      border-color: var(--primary);
+    }
+    .tabs {
+      margin: 25px 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      max-width: 700px;
+      padding: 0 10px;
+    }
+    .tab {
+      padding: 12px 22px;
+      background: #ddd;
+      border-radius: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s, color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .tab i {
+      font-size: 16px;
+    }
+    .tab.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,123,255,0.4);
+    }
+    button {
+      background: var(--secondary);
+      border: none;
+      color: white;
+      font-size: 18px;
+      padding: 14px 28px;
+      border-radius: 24px;
+      cursor: pointer;
+      margin-bottom: 40px;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(40,167,69,0.4);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    button:hover {
+      background: #218838;
+      box-shadow: 0 6px 12px rgba(33,136,56,0.6);
+    }
+    #results {
+      max-width: 600px;
+      width: 90%;
+      background: white;
+      border-radius: 12px;
+      padding: 20px 28px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      display: none;
+      color: var(--text-light);
+      margin-bottom: 40px;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark #results {
+      background: #2e2e3e;
+      color: var(--text-dark);
+    }
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid var(--primary);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      animation: spin 1s linear infinite;
+      margin: 30px auto 40px;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+    .dark-mode-toggle {
+      position: fixed;
+      top: 14px;
+      right: 20px;
+      font-size: 22px;
+      cursor: pointer;
+      color: var(--text-light);
+      user-select: none;
+      transition: color 0.3s;
+      z-index: 10;
+    }
+    body.dark .dark-mode-toggle {
+      color: var(--text-dark);
+    }
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+      background: #f8f9fa;
+      color: #555;
+      font-size: 14px;
+      border-top: 1px solid #ddd;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark footer {
+      background: #2e2e3e;
+      color: #aaa;
+      border-top: 1px solid #555;
+    }
+    footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    body.dark footer a {
+      color: #4dabf7;
+    }
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 2.5rem;
+        margin-top: 30px;
+      }
+      .tab {
+        font-size: 12px;
+        padding: 8px 16px;
+      }
+      button {
+        font-size: 16px;
+        padding: 12px 22px;
+      }
+      #searchBox {
+        font-size: 16px;
+        padding: 12px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+    <i class="fas fa-moon" id="darkIcon"></i>
+  </div>
+
+  <div class="logo" aria-label="Unicto Search logo">
+    <span>U</span><span>n</span><span>i</span><span>c</span><span>t</span><span>o</span><span> </span>
+    <span>S</span><span>e</span><span>a</span><span>r</span><span>c</span><span>h</span>
+  </div>
+
+  <input type="text" id="searchBox" placeholder="Search anything..." autocomplete="off" />
+
+  <div class="tabs">
+    <div class="tab active" data-type="web"><i class="fas fa-globe"></i>Web</div>
+    <div class="tab" data-type="youtube"><i class="fab fa-youtube"></i>YouTube</div>
+    <div class="tab" data-type="wikipedia"><i class="fab fa-wikipedia-w"></i>Wikipedia</div>
+    <div class="tab" data-type="news"><i class="fas fa-newspaper"></i>News</div>
+    <div class="tab" data-type="images"><i class="fas fa-image"></i>Images</div>
+    <div class="tab" data-type="twitter"><i class="fab fa-twitter"></i>Twitter</div>
+    <div class="tab" data-type="reddit"><i class="fab fa-reddit-alien"></i>Reddit</div>
+    <div class="tab" data-type="shopping"><i class="fas fa-shopping-cart"></i>Shopping</div>
+    <div class="tab" data-type="instagram"><i class="fab fa-instagram"></i>Instagram</div>
+    <div class="tab" data-type="tiktok"><i class="fab fa-tiktok"></i>TikTok</div>
+    <div class="tab" data-type="linkedin"><i class="fab fa-linkedin-in"></i>LinkedIn</div>
+    <div class="tab" data-type="facebook"><i class="fab fa-facebook-f"></i>Facebook</div>
+    <div class="tab" data-type="github"><i class="fab fa-github"></i>GitHub</div>
+    <div class="tab" data-type="stackoverflow"><i class="fab fa-stack-overflow"></i>Stack Overflow</div>
+  </div>
+
+  <button onclick="search()">Search</button>
+
+  <div class="loader" id="loader"></div>
+
+  <div id="results"></div>
+
+  <footer>
+    Contact us at: 
+    <a href="mailto:unictosearch@gmail.com" target="_blank" rel="noopener">unictosearch@gmail.com</a>
+  </footer>
+
+  <script>
+    let selectedType = "web";
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        selectedType = tab.getAttribute("data-type");
+      });
+    });
+
+    function search() {
+      const query = document.getElementById("searchBox").value.trim();
+      if (!query) return alert("Please enter a search term.");
+
+      const results = document.getElementById("results");
+      const loader = document.getElementById("loader");
+
+      results.style.display = "none";
+      loader.style.display = "block";
+
+      const encodedQuery = encodeURIComponent(query);
+
+      const openLink = (url) => {
+        window.open(url, '_blank');
+        loader.style.display = "none";
+        results.innerHTML = `Opening: <a href="${url}" target="_blank" rel="noopener">${url}</a>`;
+        results.style.display = "block";
+      };
+
+      switch (selectedType) {
+        case "web":
+          openLink(`https://www.google.com/search?q=${encodedQuery}`);
+          break;
+        case "youtube":
+          openLink(`https://www.youtube.com/results?search_query=${encodedQuery}`);
+          break;
+        case "wikipedia":
+          fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodedQuery}`)
+            .then(res => {
+              if (!res.ok) throw new Error("Not found");
+              return res.json();
+            })
+            .then(data => {
+              loader.style.display = "none";
+              results.style.display = "block";
+              results.innerHTML = `<h3>${data.title}</h3><p>${data.extract}</p><p><a href="${data.content_urls.desktop.page}" target="_blank" rel="noopener">Read more on Wikipedia</a></p>`;
+            })
+            .catch(() => {
+              loader.style.display = "none";
+              results.style.display = "block";
+              results.innerHTML = `No Wikipedia article found for "${query}".`;
+            });
+          break;
+        case "news":
+          openLink(`https://news.google.com/search?q=${encodedQuery}`);
+          break;
+        case "images":
+          openLink(`https://www.google.com/search?tbm=isch&q=${encodedQuery}`);
+          break;
+        case "twitter":
+          openLink(`https://twitter.com/search?q=${encodedQuery}`);
+          break;
+        case "reddit":
+          openLink(`https://www.reddit.com/search/?q=${encodedQuery}`);
+          break;
+        case "shopping":
+          openLink(`https://www.google.com/search?tbm=shop&q=${encodedQuery}`);
+          break;
+        case "instagram":
+          openLink(`https://www.instagram.com/explore/tags/${encodedQuery}/`);
+          break;
+        case "tiktok":
+          openLink(`https://www.tiktok.com/search?q=${encodedQuery}`);
+          break;
+        case "linkedin":
+          openLink(`https://www.linkedin.com/search/results/all/?keywords=${encodedQuery}`);
+          break;
+        case "facebook":
+          openLink(`https://www.facebook.com/search/top?q=${encodedQuery}`);
+          break;
+        case "github":
+          openLink(`https://github.com/search?q=${encodedQuery}`);
+          break;
+        case "stackoverflow":
+          openLink(`https://stackoverflow.com/search?q=${encodedQuery}`);
+          break;
+        default:
+          alert("Unknown search type");
+          loader.style.display = "none";
+          break;
+      }
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      const icon = document.getElementById('darkIcon');
+      if (document.body.classList.contains('dark')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    }
+  </script>
+</body>
+  </html>
